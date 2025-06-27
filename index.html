@@ -2,7 +2,8 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>No Mames</title>
+    <title>alaverga.net</title>
+    <link rel="icon" href="assets/RenderedImage.jpeg" />
     <style>
       html,
       body {
@@ -11,55 +12,118 @@
         height: 100%;
         background-color: #000;
         color: #fff;
-        font-family: sans-serif;
+        font-family: "Comic Sans MS", cursive, sans-serif;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
         text-align: center;
       }
+      #app {
+        margin-top: 2rem;
+      }
       h1 {
         font-size: 8vw;
-        margin: 0.2em 0;
+        margin: 0.5em 0;
+        color: #ff69b4;
+        text-shadow: 3px 3px 0 #0ff, -2px -2px 0 #f00;
       }
       h2 {
         font-size: 2vw;
-        font-weight: normal;
-        margin-bottom: 1em;
+        margin: 0.5em 0 1em;
       }
       img {
-        max-width: 80%;
-        height: auto;
-        border-radius: 10px;
+        max-width: 90%;
+        margin-bottom: 2em;
       }
-
       .btn {
-        display: inline-block;
-        margin-top: 2em;
         padding: 1em 2em;
         background: linear-gradient(135deg, #ff66cc, #ffff66, #66ffcc);
         color: #2b0000;
-        font-size: 2vw;
-        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-size: 1.8vw;
         text-decoration: none;
         border: 4px dashed #ff0000;
         border-radius: 15px;
         box-shadow: 0 0 15px #ff0000, 2px 2px 0 #000;
-        transform: rotate(-1.5deg);
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
+        cursor: pointer;
       }
-
       .btn:hover {
         background: linear-gradient(135deg, #66ffcc, #ffff66, #ff66cc);
-        transform: rotate(1.5deg) scale(1.1);
-        box-shadow: 0 0 25px #ff0099, 4px 4px 0 #222;
+        transform: rotate(-2deg) scale(1.1);
+        box-shadow: 0 0 30px #0ff, 4px 4px 0 #222;
       }
     </style>
   </head>
   <body>
-    <h1>NO MAMES</h1>
-    <h2>pinche pagina esta en construcción</h2>
-    <img src="assets/pngaaa.com-34971.png" alt="racist af" />
-    <a href="nada.html" class="btn">¿Y si le picas aquí wey?</a>
+    <div id="app"></div>
+
+    <audio id="bg-music" autoplay loop>
+      <source src="assets/bmtl.mp3" type="audio/mpeg" />
+      Tu navegador no soporta audio HTML5 😔
+    </audio>
+
+    <script>
+      const app = document.getElementById("app");
+
+      const routes = {
+        home: `
+        <h1>NO MAMES</h1>
+        <h2>pinche página está en construcción</h2>
+        <img src="assets/pngaaa.com-34971.png" alt="racist af">
+        <div><a class="btn" onclick="navigate('nada')">¿Y si le picas aquí wey?</a></div>
+      `,
+        nada: `
+        <h1>No hay nada aquí tampoco ... como chingas.</h1>
+        <div><a class="btn" onclick="navigate('home')">Volver</a></div>
+      `,
+      };
+
+      function navigate(route) {
+        window.history.pushState({}, "", "#" + route);
+        render(route);
+      }
+
+      function render(route) {
+        const content = routes[route] || routes.home;
+        app.innerHTML = content;
+      }
+
+      window.addEventListener("popstate", () => {
+        const route = location.hash.replace("#", "") || "home";
+        render(route);
+      });
+
+      window.addEventListener("load", () => {
+        const route = location.hash.replace("#", "") || "home";
+        render(route);
+
+        const audio = document.getElementById("bg-music");
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            const btn = document.createElement("button");
+            btn.textContent = "▶️ Toca pa’ una rola bien chingona";
+            btn.style = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1rem;
+            padding: 0.8em 1.2em;
+            background-color: #ff0;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+            cursor: pointer;
+          `;
+            btn.onclick = () => {
+              audio.play();
+              btn.remove();
+            };
+            document.body.appendChild(btn);
+          });
+        }
+      });
+    </script>
   </body>
 </html>
