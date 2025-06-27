@@ -32,21 +32,34 @@
         height: auto;
         border-radius: 10px;
       }
+
+      .btn {
+        display: inline-block;
+        margin-top: 2em;
+        padding: 1em 2em;
+        background: linear-gradient(135deg, #ff66cc, #ffff66, #66ffcc);
+        color: #2b0000;
+        font-size: 2vw;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        text-decoration: none;
+        border: 4px dashed #ff0000;
+        border-radius: 15px;
+        box-shadow: 0 0 15px #ff0000, 2px 2px 0 #000;
+        transform: rotate(-1.5deg);
+        transition: all 0.2s ease;
+      }
+
+      .btn:hover {
+        background: linear-gradient(135deg, #66ffcc, #ffff66, #ff66cc);
+        transform: rotate(1.5deg) scale(1.1);
+        box-shadow: 0 0 25px #ff0099, 4px 4px 0 #222;
+      }
     </style>
   </head>
   <body>
     <h1>NO MAMES</h1>
     <h2>pinche pagina esta en construcción</h2>
     <img src="assets/pngaaa.com-34971.png" alt="racist af" />
-    <a
-      href="nada.html"
-      style="
-        margin-top: 2em;
-        color: #0ff;
-        font-size: 1.5vw;
-        text-decoration: none;
-      "
-      >¿Y si le picas aquí wey?</a
-    >
+    <a href="nada.html" class="btn">¿Y si le picas aquí wey?</a>
   </body>
 </html>
