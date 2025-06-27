@@ -12,7 +12,7 @@
         height: 100%;
         background-color: #000;
         color: #fff;
-        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-family: sans-serif;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -33,7 +33,10 @@
       }
       img {
         max-width: 90%;
+        border-radius: 15px;
         margin-bottom: 2em;
+        box-shadow: none;
+        border: none;
       }
       .btn {
         padding: 1em 2em;
@@ -46,10 +49,11 @@
         box-shadow: 0 0 15px #ff0000, 2px 2px 0 #000;
         transition: all 0.3s ease;
         cursor: pointer;
+        font-family: "Comic Sans MS", cursive;
       }
       .btn:hover {
         background: linear-gradient(135deg, #66ffcc, #ffff66, #ff66cc);
-        transform: rotate(-2deg) scale(1.1);
+        transform: rotate(-2deg) scale(1.1) skewX(-5deg);
         box-shadow: 0 0 30px #0ff, 4px 4px 0 #222;
       }
     </style>
@@ -115,6 +119,7 @@
             border-radius: 8px;
             box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
             cursor: pointer;
+            font-family: 'Comic Sans MS', cursive;
           `;
             btn.onclick = () => {
               audio.play();
