@@ -2,112 +2,628 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8" />
-        <title>alaverga.net</title>
+        <title>~ alaverga.net ~ El mejor sitio del internet ~</title>
         <link rel="icon" href="assets/RenderedImage.jpeg" />
         <style>
+            /* === BACKGROUND === */
             html,
             body {
                 margin: 0;
                 padding: 0;
-                height: 100%;
-                background-color: #000;
+                background: #000 url("https://web.archive.org/web/20091027053527/http://geocities.com/Area51/Vault/4823/stars.gif")
+                    repeat;
                 color: #fff;
-                font-family: sans-serif;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+                font-family: "Times New Roman", Times, serif;
+                font-size: 16px;
+            }
+            /* fallback if the bg gif fails: still chaotic */
+            body {
+                background-color: #000033;
+            }
+
+            /* === TOP MARQUEE BAR === */
+            .topbar {
+                background: #ff0;
+                color: #f00;
+                font-family: "Comic Sans MS", cursive;
+                font-weight: bold;
+                font-size: 18px;
+                border-bottom: 4px ridge #f0f;
+                padding: 4px 0;
+            }
+
+            /* === BIG TITLE === */
+            .title {
+                text-align: center;
+                margin: 18px 0 6px;
+            }
+            .title h1 {
+                display: inline-block;
+                font-family: "Impact", "Comic Sans MS", cursive;
+                font-size: 64px;
+                margin: 0;
+                padding: 0 20px;
+                color: #ff00ff;
+                background: linear-gradient(
+                    180deg,
+                    #ffcc00 0%,
+                    #ff0000 50%,
+                    #660000 100%
+                );
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow:
+                    3px 3px 0 #000,
+                    6px 6px 0 #0ff;
+                letter-spacing: 2px;
+                transform: skewY(-2deg);
+            }
+            .subtitle {
+                text-align: center;
+                color: #0ff;
+                font-family: "Comic Sans MS", cursive;
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            .blink {
+                animation: blink 1s steps(2, start) infinite;
+            }
+            @keyframes blink {
+                to {
+                    visibility: hidden;
+                }
+            }
+            .rainbow {
+                background: linear-gradient(
+                    90deg,
+                    red,
+                    orange,
+                    yellow,
+                    green,
+                    cyan,
+                    blue,
+                    violet,
+                    red
+                );
+                background-size: 200% 100%;
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: rainbow 4s linear infinite;
+                font-weight: bold;
+            }
+            @keyframes rainbow {
+                to {
+                    background-position: 200% 0;
+                }
+            }
+
+            /* === LAYOUT === */
+            .page {
+                width: 95%;
+                max-width: 1100px;
+                margin: 0 auto 40px;
+            }
+            .grid {
+                display: grid;
+                grid-template-columns: 1fr 2fr 1fr;
+                gap: 14px;
+            }
+            @media (max-width: 800px) {
+                .grid {
+                    grid-template-columns: 1fr;
+                }
+                .title h1 {
+                    font-size: 40px;
+                }
+            }
+
+            /* === CELLS (each one is a little 90s window) === */
+            .cell {
+                background: #c0c0c0;
+                color: #000;
+                padding: 10px;
+                margin-bottom: 14px;
+                font-family: "Times New Roman", serif;
+            }
+            .cell h2 {
+                margin: 0 0 6px;
+                font-family: "Comic Sans MS", cursive;
+                font-size: 20px;
                 text-align: center;
             }
-            #app {
-                margin-top: 2rem;
+            .cell p {
+                margin: 4px 0;
+                line-height: 1.35;
             }
-            h1 {
-                font-size: 8vw;
-                margin: 0.5em 0;
-                color: #ff69b4;
-                text-shadow:
-                    3px 3px 0 #0ff,
-                    -2px -2px 0 #f00;
+            .cell a {
+                color: #00f;
+                text-decoration: underline;
             }
-            h2 {
-                font-size: 2vw;
-                margin: 0.5em 0 1em;
+            .cell a:visited {
+                color: #800080;
             }
-            img {
-                max-width: 90%;
-                border-radius: 15px;
-                margin-bottom: 2em;
-                box-shadow: none;
-                border: none;
+
+            /* mismatched borders for that collage feel */
+            .b-ridge {
+                border: 6px ridge #ff00ff;
             }
+            .b-groove {
+                border: 6px groove #00ffff;
+            }
+            .b-dashed {
+                border: 5px dashed #ffff00;
+            }
+            .b-double {
+                border: 6px double #ff6600;
+            }
+            .b-outset {
+                border: 6px outset #00ff00;
+            }
+            .b-inset {
+                border: 6px inset #ff0000;
+            }
+
+            /* mismatched cell backgrounds */
+            .bg-yellow {
+                background: #ffff66;
+            }
+            .bg-pink {
+                background: #ffccff;
+            }
+            .bg-cyan {
+                background: #ccffff;
+            }
+            .bg-lime {
+                background: #ccffcc;
+            }
+            .bg-tan {
+                background: #f5deb3;
+            }
+            .bg-black {
+                background: #000;
+                color: #0f0;
+            }
+            .bg-black a {
+                color: #0ff;
+            }
+
+            /* === HIT COUNTER === */
+            .counter {
+                display: inline-block;
+                background: #000;
+                color: #0f0;
+                font-family: "Courier New", monospace;
+                font-size: 22px;
+                padding: 4px 8px;
+                border: 3px inset #888;
+                letter-spacing: 4px;
+            }
+
+            /* === GIF SLOTS === */
+            .gif-slot {
+                display: inline-block;
+                min-width: 88px;
+                min-height: 31px;
+                margin: 2px;
+                background: repeating-linear-gradient(
+                    45deg,
+                    #444,
+                    #444 6px,
+                    #222 6px,
+                    #222 12px
+                );
+                color: #fff;
+                font-family: "Courier New", monospace;
+                font-size: 10px;
+                text-align: center;
+                line-height: 31px;
+                border: 1px solid #fff;
+            }
+            .gif-row {
+                text-align: center;
+                margin: 6px 0;
+            }
+            img.deco {
+                vertical-align: middle;
+                margin: 2px;
+                height: 50px;
+                image-rendering: pixelated;
+            }
+
+            /* === FLAPPY === */
+            #flappy-canvas {
+                display: block;
+                margin: 0 auto;
+                background: #70c5ce;
+                border: 4px ridge #ff00ff;
+                max-width: 100%;
+            }
+            #flappy-scores {
+                padding-left: 1.4em;
+                margin: 0;
+                color: #ff0;
+                font-family: "Courier New", monospace;
+            }
+            #flappy-scores li b {
+                color: #fff;
+            }
+
+            /* === BUTTONS === */
             .btn {
-                padding: 1em 2em;
-                background: linear-gradient(135deg, #ff66cc, #ffff66, #66ffcc);
-                color: #2b0000;
-                font-size: 1.8vw;
-                text-decoration: none;
-                border: 4px dashed #ff0000;
-                border-radius: 15px;
-                box-shadow:
-                    0 0 15px #ff0000,
-                    2px 2px 0 #000;
-                transition: all 0.3s ease;
-                cursor: pointer;
+                display: inline-block;
+                padding: 8px 16px;
+                background: linear-gradient(180deg, #ffff66, #ff6600);
+                color: #000;
                 font-family: "Comic Sans MS", cursive;
+                font-weight: bold;
+                text-decoration: none;
+                border: 4px outset #ff0;
+                cursor: pointer;
+                margin: 4px;
             }
-            .btn:hover {
-                background: linear-gradient(135deg, #66ffcc, #ffff66, #ff66cc);
-                transform: rotate(-2deg) scale(1.1) skewX(-5deg);
-                box-shadow:
-                    0 0 30px #0ff,
-                    4px 4px 0 #222;
+            .btn:active {
+                border-style: inset;
+            }
+
+            /* === HR retro === */
+            hr.retro {
+                height: 6px;
+                border: 0;
+                background: linear-gradient(
+                    90deg,
+                    #f00,
+                    #ff0,
+                    #0f0,
+                    #0ff,
+                    #00f,
+                    #f0f,
+                    #f00
+                );
+                margin: 10px 0;
+            }
+
+            /* === WEBRING === */
+            .webring {
+                text-align: center;
+                font-family: "Courier New", monospace;
+                font-size: 13px;
+            }
+
+            /* === FOOTER === */
+            footer {
+                text-align: center;
+                color: #fff;
+                font-family: "Comic Sans MS", cursive;
+                padding: 20px;
+                background: #000;
+                border-top: 4px ridge #ff0;
+            }
+            footer .best-viewed {
+                color: #0ff;
+            }
+
+            /* === FLOATING THING === */
+            .floater {
+                position: fixed;
+                bottom: 10px;
+                left: 10px;
+                z-index: 999;
+                font-family: "Comic Sans MS", cursive;
+                color: #ff0;
+                background: #000;
+                border: 3px ridge #f0f;
+                padding: 4px 8px;
+                font-size: 12px;
             }
         </style>
     </head>
     <body>
-        <div id="app"></div>
+        <!-- === TOP MARQUEE === -->
+        <div class="topbar">
+            <marquee scrollamount="8"
+                >★彡 BIENVENIDOS A ALAVERGA.NET ★彡 ¡EL MEJOR SITIO DEL
+                INTERNET! ★彡 PINCHE PÁGINA EN CONSTRUCCIÓN DESDE 1998 ★彡 NO
+                MAMES WEY ★彡 FIRMA EL GUESTBOOK ★彡 BEST VIEWED IN NETSCAPE
+                NAVIGATOR ★彡</marquee
+            >
+        </div>
+
+        <!-- === TITLE === -->
+        <div class="title">
+            <h1>~ ALAVERGA.NET ~</h1>
+            <div class="subtitle">
+                <span class="blink">★</span>
+                <span class="rainbow">El sitio más chingón del cyberespacio</span>
+                <span class="blink">★</span>
+            </div>
+        </div>
+
+        <hr class="retro" />
+
+        <div class="page">
+            <!-- === MAIN GRID === -->
+            <div class="grid">
+                <!-- === LEFT COLUMN === -->
+                <div>
+                    <div class="cell b-ridge bg-yellow">
+                        <h2>★ Navegación ★</h2>
+                        <p>» <a href="#welcome">Bienvenida</a></p>
+                        <p>» <a href="#flappy">Flappy Wey</a></p>
+                        <p>» <a href="#leaderboard">Top 5 🏆</a></p>
+                        <p>» <a href="#guestbook">Guestbook</a></p>
+                        <p>» <a href="#about">Acerca de</a></p>
+                        <p>» <a href="#webring">Webring</a></p>
+                    </div>
+
+                    <div class="cell b-double bg-cyan">
+                        <h2>👁 Visitantes</h2>
+                        <p style="text-align: center">
+                            Eres el visitante #<br />
+                            <span class="counter" id="hit-counter">0000420</span>
+                        </p>
+                        <p style="text-align: center; font-size: 12px">
+                            Desde el martes
+                        </p>
+                    </div>
+
+                    <div class="cell b-dashed bg-pink">
+                        <h2>📻 Música</h2>
+                        <p style="text-align: center">
+                            Sonando ahorita:<br />
+                            <b><i>bmtl.mp3</i></b>
+                        </p>
+                        <p style="text-align: center">
+                            <button
+                                class="btn"
+                                onclick="toggleMusic()"
+                                id="music-toggle"
+                                style="font-size: 12px; padding: 4px 10px"
+                            >
+                                ⏸ Pausar
+                            </button>
+                        </p>
+                        <div class="gif-row">
+                            <img class="deco" src="assets/gifs/musicnote.gif" alt="music">
+                            <img class="deco" src="assets/gifs/radio.gif" alt="radio">
+                        </div>
+                    </div>
+
+                    <div class="cell b-groove bg-tan">
+                        <h2>🚧 En obras 🚧</h2>
+                        <div class="gif-row">
+                            <img class="deco" src="assets/gifs/underconstruction.gif" alt="under construction" style="height:60px;">
+                        </div>
+                        <p style="text-align: center; font-size: 13px">
+                            Esta página lleva en construcción desde 1998 y va
+                            como va wey.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- === CENTER COLUMN === -->
+                <div>
+                    <div class="cell b-outset bg-black" id="welcome">
+                        <h2 style="color: #ff0">¡¡¡ NO MAMES, ENTRASTE !!!</h2>
+                        <div class="gif-row">
+                            <img class="deco" src="assets/gifs/dancing_baby.gif" alt="dancing baby">
+                            <img class="deco" src="assets/gifs/flame.gif" alt="flame">
+                            <img class="deco" src="assets/gifs/welcome.gif" alt="welcome" style="height:70px;">
+                            <img class="deco" src="assets/gifs/flame.gif" alt="flame">
+                            <img class="deco" src="assets/gifs/dancing_baby.gif" alt="dancing baby">
+                        </div>
+                        <p style="text-align: center">
+                            Bienvenidos al rincón más chingón del internet.
+                            Aquí no hay nada útil pero hay
+                            <span class="blink" style="color: #f0f"
+                                >MUCHO ESTILO</span
+                            >.
+                        </p>
+                        <p style="text-align: center">
+                            <img
+                                src="assets/pngaaa.com-34971.png"
+                                alt="mascota"
+                                style="
+                                    max-width: 60%;
+                                    border: 6px ridge #ff00ff;
+                                    background: #fff;
+                                    padding: 4px;
+                                "
+                            />
+                        </p>
+                        <p style="text-align: center">
+                            <a class="btn" href="#flappy">¡Pícale aquí wey!</a>
+                        </p>
+                    </div>
+
+                    <div class="cell b-inset bg-lime" id="flappy">
+                        <h2>🐤 FLAPPY WEY 🐤</h2>
+                        <p style="text-align: center; font-family: monospace">
+                            Espacio / ↑ / Tap pa' aletear
+                        </p>
+                        <canvas
+                            id="flappy-canvas"
+                            width="480"
+                            height="640"
+                        ></canvas>
+                        <p style="text-align: center; margin-top: 8px">
+                            <span class="blink" style="color: #f00"
+                                >¡NUEVO!</span
+                            >
+                            Ahora con leaderboard universal →
+                        </p>
+                    </div>
+
+                    <div class="cell b-ridge bg-pink" id="guestbook">
+                        <h2>✍ Guestbook ✍</h2>
+                        <p style="text-align: center">
+                            <i>Déjale tu firma a este pinche sitio:</i>
+                        </p>
+                        <p style="font-family: 'Courier New', monospace; font-size: 13px">
+                            > <b>juancho_94</b>: chingón el sitio wey 🔥<br />
+                            > <b>lupita</b>: la canción está bien chida<br />
+                            > <b>elcompa</b>: pásenme el flappy<br />
+                            > <b>anónimo</b>: viva México cabrones 🇲🇽<br />
+                            > <b>tu_jefa</b>: ya vente a cenar
+                        </p>
+                        <p style="text-align: center">
+                            <a class="btn" onclick="alert('El guestbook se rompió en 2003 wey 😔'); return false;" href="#"
+                                >Firmar</a
+                            >
+                        </p>
+                    </div>
+                </div>
+
+                <!-- === RIGHT COLUMN === -->
+                <div>
+                    <div class="cell b-double bg-black" id="leaderboard">
+                        <h2 style="color: #ff0">🏆 TOP 5 🏆</h2>
+                        <ol id="flappy-scores">
+                            <li style="color: #888; list-style: none; margin-left: -1em">
+                                cargando...
+                            </li>
+                        </ol>
+                        <p style="text-align: center; font-size: 11px; color: #0ff">
+                            (universal, real wey)
+                        </p>
+                    </div>
+
+                    <div class="cell b-dashed bg-yellow" id="about">
+                        <h2>📜 Acerca de</h2>
+                        <p style="font-size: 13px">
+                            Hecho con amor, HTML y mucho copy-paste por
+                            <b>alaverga</b>. Sin frameworks, sin tracking, sin
+                            sentido.
+                        </p>
+                        <p style="font-size: 13px">
+                            <b>Tecnologías:</b> HTML 4, CSS, JavaScript,
+                            <span class="blink">marquee</span>, esperanza.
+                        </p>
+                    </div>
+
+                    <div class="cell b-outset bg-cyan" id="webring">
+                        <h2>🔗 Webring</h2>
+                        <div class="webring">
+                            <p>« anterior | random | siguiente »</p>
+                            <p>
+                                Parte del<br />
+                                <b class="rainbow">★ NO-MAMES WEBRING ★</b>
+                            </p>
+                            <div class="gif-row">
+                                <img class="deco" src="assets/gifs/webring.gif" alt="webring" style="height:60px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cell b-groove bg-tan">
+                        <h2>📧 Contacto</h2>
+                        <p style="text-align: center; font-size: 13px">
+                            <a href="mailto:webmaster@alaverga.net"
+                                >webmaster@alaverga.net</a
+                            ><br />
+                            <span style="font-size: 11px"
+                                >(no jala el correo wey)</span
+                            >
+                        </p>
+                        <div class="gif-row">
+                            <img class="deco" src="assets/gifs/mailbox.gif" alt="mailbox" style="height:60px;">
+                        </div>
+                    </div>
+
+                    <div class="cell b-inset bg-lime">
+                        <h2>⚠ Aviso ⚠</h2>
+                        <p style="font-size: 12px">
+                            Este sitio NO es responsable de:
+                        </p>
+                        <ul style="font-size: 12px; margin: 4px 0">
+                            <li>Convulsiones por gifs</li>
+                            <li>Tu pinche tiempo perdido</li>
+                            <li>Adicción al flappy</li>
+                            <li>El reggaetón sonando solo</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="retro" />
+
+            <!-- === BOTTOM GIF STRIP === -->
+            <div class="gif-row">
+                <img class="deco" src="assets/gifs/flame.gif" alt="flame">
+                <img class="deco" src="assets/gifs/skull.gif" alt="skull">
+                <img class="deco" src="assets/gifs/alien.gif" alt="alien">
+                <img class="deco" src="assets/gifs/heart.gif" alt="heart">
+                <img class="deco" src="assets/gifs/heart.gif" alt="heart">
+                <img class="deco" src="assets/gifs/flame.gif" alt="flame">
+                <img class="deco" src="assets/gifs/skull.gif" alt="skull">
+                <img class="deco" src="assets/gifs/alien.gif" alt="alien">
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                © 1998-2026 alaverga.net &nbsp;|&nbsp;
+                <span class="best-viewed">Best viewed in Netscape Navigator 4.0 @ 800×600</span>
+            </p>
+            <p style="font-size: 12px">
+                Hecho a mano con <span class="blink" style="color: #f00">♥</span>
+                en algún rincón del cyberespacio.
+            </p>
+        </footer>
+
+        <div class="floater">
+            <span class="blink">●</span> ONLINE
+        </div>
 
         <audio id="bg-music" autoplay loop>
             <source src="assets/bmtl.mp3" type="audio/mpeg" />
-            Tu navegador no soporta audio HTML5 😔
         </audio>
 
         <script>
-            const app = document.getElementById("app");
+            // === HIT COUNTER (fake but persistent) ===
+            (function () {
+                const KEY = "alaverga_hits";
+                let n = parseInt(localStorage.getItem(KEY) || "420", 10);
+                n++;
+                localStorage.setItem(KEY, String(n));
+                const el = document.getElementById("hit-counter");
+                if (el) el.textContent = String(n).padStart(7, "0");
+            })();
 
-            const routes = {
-                home: `
-        <h1>NO MAMES</h1>
-        <h2>pinche página está en construcción</h2>
-        <img src="assets/pngaaa.com-34971.png" alt="racist af">
-        <div><a class="btn" onclick="navigate('flappy')">¿Y si le picas aquí wey?</a></div>
-      `,
-                flappy: `
-        <h1>FLAPPY WEY</h1>
-        <h2>Espacio / ↑ / Tap pa' aletear</h2>
-        <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-start; gap:1.5em;">
-          <canvas id="flappy-canvas" width="480" height="640" style="max-width:95%; background:#70c5ce; border:4px dashed #ff0; border-radius:12px;"></canvas>
-          <div id="flappy-leaderboard" style="min-width:220px; background:#111; border:4px dashed #0ff; border-radius:12px; padding:1em; font-family:monospace; text-align:left;">
-            <h3 style="margin:0 0 0.5em; color:#ff0; text-align:center; font-family:'Comic Sans MS', cursive;">🏆 TOP 5 🏆</h3>
-            <ol id="flappy-scores" style="padding-left:1.5em; margin:0; color:#fff;"></ol>
-          </div>
-        </div>
-        <div style="margin-top:1em;"><a class="btn" onclick="navigate('home')">Volver</a></div>
-      `,
-            };
-
-            function navigate(route) {
-                window.history.pushState({}, "", "#" + route);
-                render(route);
+            // === MUSIC TOGGLE ===
+            function toggleMusic() {
+                const a = document.getElementById("bg-music");
+                const b = document.getElementById("music-toggle");
+                if (a.paused) {
+                    a.play();
+                    b.textContent = "⏸ Pausar";
+                } else {
+                    a.pause();
+                    b.textContent = "▶ Reproducir";
+                }
             }
+            window.addEventListener("load", () => {
+                const audio = document.getElementById("bg-music");
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        const btn = document.createElement("button");
+                        btn.textContent = "▶️ Toca pa’ una rola bien chingona";
+                        btn.className = "btn";
+                        btn.style.cssText =
+                            "position:fixed;bottom:10px;right:10px;z-index:1000;";
+                        btn.onclick = () => {
+                            audio.play();
+                            btn.remove();
+                        };
+                        document.body.appendChild(btn);
+                    });
+                }
+            });
 
-            function render(route) {
-                const content = routes[route] || routes.home;
-                app.innerHTML = content;
-                if (route === "flappy") startFlappyGame();
-            }
-
-            function startFlappyGame() {
+            // === FLAPPY GAME + UNIVERSAL LEADERBOARD ===
+            (function startFlappyGame() {
                 const canvas = document.getElementById("flappy-canvas");
                 if (!canvas) return;
                 const ctx = canvas.getContext("2d");
@@ -115,12 +631,6 @@
                 const H = canvas.height;
                 const groundH = 60;
 
-                // === UNIVERSAL LEADERBOARD (JSONBin.io) ===
-                // 1) Create a bin at https://jsonbin.io (start it as: {"scores":[]})
-                // 2) Paste the Bin ID and your Master Key below.
-                // Leave empty strings to fall back to per-device localStorage.
-                // Note: the master key is client-side, so anyone can overwrite the bin.
-                // That's fine for a joke site; don't use this pattern for anything serious.
                 const JSONBIN_BIN_ID = "69d6d4c7856a682189121276";
                 const JSONBIN_KEY =
                     "$2a$10$U.dkB0jRV74ODBw7eB4iL.RzujbGTHgAQwg7BYWXtS5LiOI2/A0Da";
@@ -158,10 +668,7 @@
                             (data && data.record && data.record.scores) || [];
                         return Array.isArray(list) ? list : [];
                     } catch (e) {
-                        console.warn(
-                            "leaderboard fetch failed, using local",
-                            e,
-                        );
+                        console.warn("leaderboard fetch failed, using local", e);
                         return loadLocal();
                     }
                 }
@@ -182,22 +689,6 @@
                     }
                 }
 
-                function renderLeaderboard() {
-                    const ol = document.getElementById("flappy-scores");
-                    if (!ol) return;
-                    const list = cachedScores;
-                    if (list.length === 0) {
-                        ol.innerHTML =
-                            '<li style="color:#888; list-style:none; margin-left:-1em;">sin scores aún</li>';
-                        return;
-                    }
-                    ol.innerHTML = list
-                        .map(
-                            (e) =>
-                                `<li><span style="color:#0ff;">${escapeHtml(e.name)}</span> — <b style="color:#ff0;">${e.score}</b></li>`,
-                        )
-                        .join("");
-                }
                 function escapeHtml(s) {
                     return String(s).replace(
                         /[&<>"']/g,
@@ -210,6 +701,22 @@
                                 "'": "&#39;",
                             })[c],
                     );
+                }
+                function renderLeaderboard() {
+                    const ol = document.getElementById("flappy-scores");
+                    if (!ol) return;
+                    const list = cachedScores;
+                    if (list.length === 0) {
+                        ol.innerHTML =
+                            '<li style="color:#888; list-style:none; margin-left:-1em;">sin scores aún</li>';
+                        return;
+                    }
+                    ol.innerHTML = list
+                        .map(
+                            (e) =>
+                                `<li><span style="color:#0ff;">${escapeHtml(e.name)}</span> — <b>${e.score}</b></li>`,
+                        )
+                        .join("");
                 }
                 async function refreshLeaderboard() {
                     cachedScores = await fetchScores();
@@ -302,7 +809,6 @@
                     if (gameOver) return;
                     rafId = requestAnimationFrame(loop);
 
-                    // bg
                     ctx.fillStyle = "#70c5ce";
                     ctx.fillRect(0, 0, W, H);
 
@@ -310,11 +816,9 @@
                         frame++;
                         bird.vy += gravity;
                         bird.y += bird.vy;
-
                         if (frame % spawnInterval === 0) spawnPipe();
                     }
 
-                    // pipes
                     ctx.fillStyle = "#2ecc40";
                     for (let i = pipes.length - 1; i >= 0; i--) {
                         const p = pipes[i];
@@ -327,7 +831,6 @@
                             H - groundH - p.top - gap,
                         );
 
-                        // collision
                         if (
                             bird.x + bird.r > p.x &&
                             bird.x - bird.r < p.x + pipeW &&
@@ -355,13 +858,11 @@
                         if (p.x + pipeW < 0) pipes.splice(i, 1);
                     }
 
-                    // ground
                     ctx.fillStyle = "#ded895";
                     ctx.fillRect(0, H - groundH, W, groundH);
                     ctx.fillStyle = "#33a532";
                     ctx.fillRect(0, H - groundH, W, 8);
 
-                    // bird
                     ctx.fillStyle = "#ff0";
                     ctx.beginPath();
                     ctx.arc(bird.x, bird.y, bird.r, 0, Math.PI * 2);
@@ -372,7 +873,6 @@
                     ctx.fillStyle = "#f60";
                     ctx.fillRect(bird.x + bird.r - 2, bird.y - 2, 8, 4);
 
-                    // floor / ceiling collision
                     if (
                         bird.y + bird.r >= H - groundH ||
                         bird.y - bird.r <= 0
@@ -380,7 +880,6 @@
                         gameOver = true;
                     }
 
-                    // score
                     ctx.fillStyle = "#fff";
                     ctx.strokeStyle = "#000";
                     ctx.lineWidth = 3;
@@ -421,70 +920,23 @@
                     ctx.textAlign = "start";
                 }
 
-                // input
-                const keyHandler = (e) => {
+                document.addEventListener("keydown", (e) => {
                     if (e.code === "Space" || e.code === "ArrowUp") {
                         e.preventDefault();
                         flap();
                     }
-                };
-                const tapHandler = (e) => {
+                });
+                canvas.addEventListener("touchstart", (e) => {
                     e.preventDefault();
                     flap();
-                };
-                document.addEventListener("keydown", keyHandler);
-                canvas.addEventListener("touchstart", tapHandler);
-                canvas.addEventListener("mousedown", tapHandler);
-
-                // cleanup when leaving route
-                const cleanup = () => {
-                    document.removeEventListener("keydown", keyHandler);
-                    if (rafId) cancelAnimationFrame(rafId);
-                    gameOver = true;
-                    window.removeEventListener("hashchange", cleanup);
-                };
-                window.addEventListener("hashchange", cleanup);
+                });
+                canvas.addEventListener("mousedown", (e) => {
+                    e.preventDefault();
+                    flap();
+                });
 
                 loop();
-            }
-
-            window.addEventListener("popstate", () => {
-                const route = location.hash.replace("#", "") || "home";
-                render(route);
-            });
-
-            window.addEventListener("load", () => {
-                const route = location.hash.replace("#", "") || "home";
-                render(route);
-
-                const audio = document.getElementById("bg-music");
-                const playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(() => {
-                        const btn = document.createElement("button");
-                        btn.textContent = "▶️ Toca pa’ una rola bien chingona";
-                        btn.style = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 1rem;
-            padding: 0.8em 1.2em;
-            background-color: #ff0;
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
-            cursor: pointer;
-            font-family: 'Comic Sans MS', cursive;
-          `;
-                        btn.onclick = () => {
-                            audio.play();
-                            btn.remove();
-                        };
-                        document.body.appendChild(btn);
-                    });
-                }
-            });
+            })();
         </script>
     </body>
 </html>
