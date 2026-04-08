@@ -10,15 +10,56 @@
             body {
                 margin: 0;
                 padding: 0;
-                background: #000 url("https://web.archive.org/web/20091027053527/http://geocities.com/Area51/Vault/4823/stars.gif")
-                    repeat;
                 color: #fff;
                 font-family: "Times New Roman", Times, serif;
                 font-size: 16px;
             }
-            /* fallback if the bg gif fails: still chaotic */
             body {
                 background-color: #000033;
+                position: relative;
+                min-height: 100vh;
+            }
+
+            /* === BACKGROUND STACK ===
+               three image blocks stacked vertically, together filling
+               the full page height (top of page down to the footer) */
+            .bg-stack {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                z-index: -1;
+                pointer-events: none;
+            }
+            .bg-block {
+                flex: 1 1 0;
+                background-position: top left;
+                background-repeat: repeat;
+                background-size: auto;
+            }
+            .bg-block.b1 { background-image: url("assets/backgrounds/bg.png"); }
+            .bg-block.b2 { background-image: url("assets/backgrounds/bg2.png"); }
+            .bg-block.b3 { background-image: url("assets/backgrounds/bg3.png"); }
+
+            /* overlay layer that holds the scattered gifs ABOVE content
+               so they're never hidden by cells/footer. pointer-events:none
+               keeps clicks/text-selection working on the real content. */
+            .bg-gif-layer {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 500;
+            }
+            .bg-gif {
+                position: absolute;
+                image-rendering: pixelated;
+                pointer-events: none;
             }
 
             /* === TOP MARQUEE BAR === */
@@ -320,6 +361,23 @@
         </style>
     </head>
     <body>
+        <!-- === BACKGROUND STACK (3 image blocks filling page top→footer) === -->
+        <div class="bg-stack" aria-hidden="true">
+            <div class="bg-block b1"></div>
+            <div class="bg-block b2"></div>
+            <div class="bg-block b3"></div>
+        </div>
+        <!-- overlay layer for scattered gifs (always above content) -->
+        <div class="bg-gif-layer" aria-hidden="true"></div>
+
+        <!-- fixed jesus, bottom-right, always visible while scrolling -->
+        <img
+            src="assets/backgroundgifs/jesus.gif"
+            alt=""
+            aria-hidden="true"
+            style="position:fixed; bottom:10px; right:10px; z-index:600; pointer-events:none; image-rendering:pixelated;"
+        />
+
         <!-- === TOP MARQUEE === -->
         <div class="topbar">
             <marquee scrollamount="8"
@@ -581,6 +639,121 @@
         </audio>
 
         <script>
+            // === SCATTER BACKGROUND GIFS ===
+            // Each gif used once. Placed at random spots that don't overlap
+            // any existing content box (cells, topbar, footer, title, etc.)
+            // or any other already-placed gif. Positions are computed once
+            // on load, then frozen — gifs stay static after placement.
+            window.addEventListener("load", function scatterBgGifs() {
+                const gifs = [
+                    "assets/backgroundgifs/911.gif",
+                    "assets/backgroundgifs/alien.gif",
+                    "assets/backgroundgifs/aztec.gif",
+                    "assets/backgroundgifs/goku.gif",
+                    "assets/backgroundgifs/goku2.gif",
+                    "assets/backgroundgifs/ladyneon.gif",
+                    "assets/backgroundgifs/planets.gif",
+                    "assets/backgroundgifs/skulltrom.gif",
+                    "assets/backgroundgifs/starwars.gif",
+                    "assets/backgroundgifs/starwars2.gif",
+                    "assets/backgroundgifs/sword.gif",
+                    "assets/backgroundgifs/ufo.gif",
+                    "assets/backgroundgifs/vegeta.gif",
+                ];
+                const layer = document.querySelector(".bg-gif-layer");
+                if (!layer) return;
+
+                // shuffle order
+                for (let i = gifs.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [gifs[i], gifs[j]] = [gifs[j], gifs[i]];
+                }
+
+                // Collect rectangles (in document coords) for everything
+                // we need to avoid overlapping.
+                const blockSelectors = [
+                    ".cell",
+                    ".topbar",
+                    ".title",
+                    "footer",
+                    "#flappy-canvas",
+                    ".floater",
+                ];
+                const reserved = [];
+                blockSelectors.forEach((sel) => {
+                    document.querySelectorAll(sel).forEach((el) => {
+                        const r = el.getBoundingClientRect();
+                        if (r.width === 0 || r.height === 0) return;
+                        reserved.push({
+                            left: r.left + window.scrollX,
+                            top: r.top + window.scrollY,
+                            right: r.right + window.scrollX,
+                            bottom: r.bottom + window.scrollY,
+                        });
+                    });
+                });
+                // also reserve the fixed bottom-right jesus area
+                reserved.push({
+                    left: window.innerWidth - 160,
+                    top: document.documentElement.scrollHeight - 160,
+                    right: window.innerWidth,
+                    bottom: document.documentElement.scrollHeight,
+                });
+
+                const docW = document.documentElement.scrollWidth;
+                const docH = document.documentElement.scrollHeight;
+                const PAD = 8; // breathing room around each gif
+                const GIF_BOX = 90; // assumed gif size for collision check
+
+                function overlaps(rect, list) {
+                    for (const r of list) {
+                        if (
+                            rect.left < r.right + PAD &&
+                            rect.right > r.left - PAD &&
+                            rect.top < r.bottom + PAD &&
+                            rect.bottom > r.top - PAD
+                        ) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                const placed = [];
+                gifs.forEach((src) => {
+                    let pos = null;
+                    for (let attempt = 0; attempt < 300; attempt++) {
+                        const left =
+                            Math.random() * Math.max(1, docW - GIF_BOX);
+                        const top =
+                            Math.random() * Math.max(1, docH - GIF_BOX);
+                        const candidate = {
+                            left,
+                            top,
+                            right: left + GIF_BOX,
+                            bottom: top + GIF_BOX,
+                        };
+                        if (
+                            !overlaps(candidate, reserved) &&
+                            !overlaps(candidate, placed)
+                        ) {
+                            pos = candidate;
+                            break;
+                        }
+                    }
+                    if (!pos) return; // skip if no free spot found
+
+                    const img = document.createElement("img");
+                    img.src = src;
+                    img.className = "bg-gif";
+                    img.alt = "";
+                    img.style.left = pos.left + "px";
+                    img.style.top = pos.top + "px";
+                    layer.appendChild(img);
+                    placed.push(pos);
+                });
+            });
+
             // === HIT COUNTER (fake but persistent) ===
             (function () {
                 const KEY = "alaverga_hits";
