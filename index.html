@@ -40,9 +40,15 @@
                 background-repeat: repeat;
                 background-size: auto;
             }
-            .bg-block.b1 { background-image: url("assets/backgrounds/bg.png"); }
-            .bg-block.b2 { background-image: url("assets/backgrounds/bg2.png"); }
-            .bg-block.b3 { background-image: url("assets/backgrounds/bg3.png"); }
+            .bg-block.b1 {
+                background-image: url("assets/backgrounds/bg.png");
+            }
+            .bg-block.b2 {
+                background-image: url("assets/backgrounds/bg2.png");
+            }
+            .bg-block.b3 {
+                background-image: url("assets/backgrounds/bg3.png");
+            }
 
             /* overlay layer that holds the scattered gifs ABOVE content
                so they're never hidden by cells/footer. pointer-events:none
@@ -370,22 +376,44 @@
         <!-- overlay layer for scattered gifs (always above content) -->
         <div class="bg-gif-layer" aria-hidden="true"></div>
 
-        <!-- fixed jesus, bottom-right, always visible while scrolling -->
+        <!-- static jesus, pinned to the right side within the 2nd/3rd background area -->
         <img
+            class="static-bg-gif"
             src="assets/backgroundgifs/jesus.gif"
             alt=""
             aria-hidden="true"
-            style="position:fixed; bottom:10px; right:10px; z-index:600; pointer-events:none; image-rendering:pixelated;"
+            style="
+                position: absolute;
+                top: 60%;
+                right: 10px;
+                z-index: 600;
+                pointer-events: none;
+                image-rendering: pixelated;
+            "
+        />
+        <!-- static 911, pinned to the left side within the 2nd/3rd background area -->
+        <img
+            class="static-bg-gif"
+            src="assets/backgroundgifs/911.gif"
+            alt=""
+            aria-hidden="true"
+            style="
+                position: absolute;
+                top: 60%;
+                left: 10px;
+                z-index: 600;
+                pointer-events: none;
+                image-rendering: pixelated;
+            "
         />
 
         <!-- === TOP MARQUEE === -->
         <div class="topbar">
-            <marquee scrollamount="8"
-                >★彡 BIENVENIDOS A ALAVERGA.NET ★彡 ¡EL MEJOR SITIO DEL
-                INTERNET! ★彡 PINCHE PÁGINA EN CONSTRUCCIÓN DESDE 1998 ★彡 NO
-                MAMES WEY ★彡 FIRMA EL GUESTBOOK ★彡 BEST VIEWED IN NETSCAPE
-                NAVIGATOR ★彡</marquee
-            >
+            <marquee scrollamount="8">
+                ★彡 BIENVENIDOS A ALAVERGA.NET ★彡 ¡EL MEJOR SITIO DEL INTERNET!
+                ★彡 PINCHE PÁGINA EN CONSTRUCCIÓN DESDE 1998 ★彡 NO MAMES WEY
+                ★彡 FIRMA EL GUESTBOOK ★彡 BEST VIEWED IN NETSCAPE NAVIGATOR ★彡
+            </marquee>
         </div>
 
         <!-- === TITLE === -->
@@ -393,7 +421,9 @@
             <h1>~ ALAVERGA.NET ~</h1>
             <div class="subtitle">
                 <span class="blink">★</span>
-                <span class="rainbow">El sitio más chingón del cyberespacio</span>
+                <span class="rainbow"
+                    >El sitio más chingón del cyberespacio</span
+                >
                 <span class="blink">★</span>
             </div>
         </div>
@@ -419,7 +449,9 @@
                         <h2>👁 Visitantes</h2>
                         <p style="text-align: center">
                             Eres el visitante #<br />
-                            <span class="counter" id="hit-counter">0000420</span>
+                            <span class="counter" id="hit-counter"
+                                >0000420</span
+                            >
                         </p>
                         <p style="text-align: center; font-size: 12px">
                             Desde el martes
@@ -443,15 +475,28 @@
                             </button>
                         </p>
                         <div class="gif-row">
-                            <img class="deco" src="assets/gifs/musicnote.gif" alt="music">
-                            <img class="deco" src="assets/gifs/radio.gif" alt="radio">
+                            <img
+                                class="deco"
+                                src="assets/gifs/musicnote.gif"
+                                alt="music"
+                            />
+                            <img
+                                class="deco"
+                                src="assets/gifs/radio.gif"
+                                alt="radio"
+                            />
                         </div>
                     </div>
 
                     <div class="cell b-groove bg-tan">
                         <h2>🚧 En obras 🚧</h2>
                         <div class="gif-row">
-                            <img class="deco" src="assets/gifs/underconstruction.gif" alt="under construction" style="height:60px;">
+                            <img
+                                class="deco"
+                                src="assets/gifs/underconstruction.gif"
+                                alt="under construction"
+                                style="height: 60px"
+                            />
                         </div>
                         <p style="text-align: center; font-size: 13px">
                             Esta página lleva en construcción desde 1998 y va
@@ -465,15 +510,36 @@
                     <div class="cell b-outset bg-black" id="welcome">
                         <h2 style="color: #ff0">¡¡¡ NO MAMES, ENTRASTE !!!</h2>
                         <div class="gif-row">
-                            <img class="deco" src="assets/gifs/dancing_baby.gif" alt="dancing baby">
-                            <img class="deco" src="assets/gifs/flame.gif" alt="flame">
-                            <img class="deco" src="assets/gifs/welcome.gif" alt="welcome" style="height:70px;">
-                            <img class="deco" src="assets/gifs/flame.gif" alt="flame">
-                            <img class="deco" src="assets/gifs/dancing_baby.gif" alt="dancing baby">
+                            <img
+                                class="deco"
+                                src="assets/gifs/dancing_baby.gif"
+                                alt="dancing baby"
+                            />
+                            <img
+                                class="deco"
+                                src="assets/gifs/flame.gif"
+                                alt="flame"
+                            />
+                            <img
+                                class="deco"
+                                src="assets/gifs/welcome.gif"
+                                alt="welcome"
+                                style="height: 70px"
+                            />
+                            <img
+                                class="deco"
+                                src="assets/gifs/flame.gif"
+                                alt="flame"
+                            />
+                            <img
+                                class="deco"
+                                src="assets/gifs/dancing_baby.gif"
+                                alt="dancing baby"
+                            />
                         </div>
                         <p style="text-align: center">
-                            Bienvenidos al rincón más chingón del internet.
-                            Aquí no hay nada útil pero hay
+                            Bienvenidos al rincón más chingón del internet. Aquí
+                            no hay nada útil pero hay
                             <span class="blink" style="color: #f0f"
                                 >MUCHO ESTILO</span
                             >.
@@ -518,7 +584,12 @@
                         <p style="text-align: center">
                             <i>Déjale tu firma a este pinche sitio:</i>
                         </p>
-                        <p style="font-family: 'Courier New', monospace; font-size: 13px">
+                        <p
+                            style="
+                                font-family: &quot;Courier New&quot;, monospace;
+                                font-size: 13px;
+                            "
+                        >
                             > <b>juancho_94</b>: chingón el sitio wey 🔥<br />
                             > <b>lupita</b>: la canción está bien chida<br />
                             > <b>elcompa</b>: pásenme el flappy<br />
@@ -526,7 +597,15 @@
                             > <b>tu_jefa</b>: ya vente a cenar
                         </p>
                         <p style="text-align: center">
-                            <a class="btn" onclick="alert('El guestbook se rompió en 2003 wey 😔'); return false;" href="#"
+                            <a
+                                class="btn"
+                                onclick="
+                                    alert(
+                                        'El guestbook se rompió en 2003 wey 😔',
+                                    );
+                                    return false;
+                                "
+                                href="#"
                                 >Firmar</a
                             >
                         </p>
@@ -538,11 +617,23 @@
                     <div class="cell b-double bg-black" id="leaderboard">
                         <h2 style="color: #ff0">🏆 TOP 5 🏆</h2>
                         <ol id="flappy-scores">
-                            <li style="color: #888; list-style: none; margin-left: -1em">
+                            <li
+                                style="
+                                    color: #888;
+                                    list-style: none;
+                                    margin-left: -1em;
+                                "
+                            >
                                 cargando...
                             </li>
                         </ol>
-                        <p style="text-align: center; font-size: 11px; color: #0ff">
+                        <p
+                            style="
+                                text-align: center;
+                                font-size: 11px;
+                                color: #0ff;
+                            "
+                        >
                             (universal, real wey)
                         </p>
                     </div>
@@ -569,7 +660,12 @@
                                 <b class="rainbow">★ NO-MAMES WEBRING ★</b>
                             </p>
                             <div class="gif-row">
-                                <img class="deco" src="assets/gifs/webring.gif" alt="webring" style="height:60px;">
+                                <img
+                                    class="deco"
+                                    src="assets/gifs/webring.gif"
+                                    alt="webring"
+                                    style="height: 60px"
+                                />
                             </div>
                         </div>
                     </div>
@@ -585,7 +681,12 @@
                             >
                         </p>
                         <div class="gif-row">
-                            <img class="deco" src="assets/gifs/mailbox.gif" alt="mailbox" style="height:60px;">
+                            <img
+                                class="deco"
+                                src="assets/gifs/mailbox.gif"
+                                alt="mailbox"
+                                style="height: 60px"
+                            />
                         </div>
                     </div>
 
@@ -608,31 +709,32 @@
 
             <!-- === BOTTOM GIF STRIP === -->
             <div class="gif-row">
-                <img class="deco" src="assets/gifs/flame.gif" alt="flame">
-                <img class="deco" src="assets/gifs/skull.gif" alt="skull">
-                <img class="deco" src="assets/gifs/alien.gif" alt="alien">
-                <img class="deco" src="assets/gifs/heart.gif" alt="heart">
-                <img class="deco" src="assets/gifs/heart.gif" alt="heart">
-                <img class="deco" src="assets/gifs/flame.gif" alt="flame">
-                <img class="deco" src="assets/gifs/skull.gif" alt="skull">
-                <img class="deco" src="assets/gifs/alien.gif" alt="alien">
+                <img class="deco" src="assets/gifs/flame.gif" alt="flame" />
+                <img class="deco" src="assets/gifs/skull.gif" alt="skull" />
+                <img class="deco" src="assets/gifs/alien.gif" alt="alien" />
+                <img class="deco" src="assets/gifs/heart.gif" alt="heart" />
+                <img class="deco" src="assets/gifs/heart.gif" alt="heart" />
+                <img class="deco" src="assets/gifs/flame.gif" alt="flame" />
+                <img class="deco" src="assets/gifs/skull.gif" alt="skull" />
+                <img class="deco" src="assets/gifs/alien.gif" alt="alien" />
             </div>
         </div>
 
         <footer>
             <p>
                 © 1998-2026 alaverga.net &nbsp;|&nbsp;
-                <span class="best-viewed">Best viewed in Netscape Navigator 4.0 @ 800×600</span>
+                <span class="best-viewed"
+                    >Best viewed in Netscape Navigator 4.0 @ 800×600</span
+                >
             </p>
             <p style="font-size: 12px">
-                Hecho a mano con <span class="blink" style="color: #f00">♥</span>
+                Hecho a mano con
+                <span class="blink" style="color: #f00">♥</span>
                 en algún rincón del cyberespacio.
             </p>
         </footer>
 
-        <div class="floater">
-            <span class="blink">●</span> ONLINE
-        </div>
+        <div class="floater"><span class="blink">●</span> ONLINE</div>
 
         <audio id="bg-music" autoplay loop>
             <source src="assets/bmtl.mp3" type="audio/mpeg" />
@@ -646,9 +748,7 @@
             // on load, then frozen — gifs stay static after placement.
             window.addEventListener("load", function scatterBgGifs() {
                 const gifs = [
-                    "assets/backgroundgifs/911.gif",
                     "assets/backgroundgifs/alien.gif",
-                    "assets/backgroundgifs/aztec.gif",
                     "assets/backgroundgifs/goku.gif",
                     "assets/backgroundgifs/goku2.gif",
                     "assets/backgroundgifs/ladyneon.gif",
@@ -678,6 +778,7 @@
                     "footer",
                     "#flappy-canvas",
                     ".floater",
+                    ".static-bg-gif",
                 ];
                 const reserved = [];
                 blockSelectors.forEach((sel) => {
@@ -692,14 +793,6 @@
                         });
                     });
                 });
-                // also reserve the fixed bottom-right jesus area
-                reserved.push({
-                    left: window.innerWidth - 160,
-                    top: document.documentElement.scrollHeight - 160,
-                    right: window.innerWidth,
-                    bottom: document.documentElement.scrollHeight,
-                });
-
                 const docW = document.documentElement.scrollWidth;
                 const docH = document.documentElement.scrollHeight;
                 const PAD = 8; // breathing room around each gif
@@ -725,8 +818,7 @@
                     for (let attempt = 0; attempt < 300; attempt++) {
                         const left =
                             Math.random() * Math.max(1, docW - GIF_BOX);
-                        const top =
-                            Math.random() * Math.max(1, docH - GIF_BOX);
+                        const top = Math.random() * Math.max(1, docH - GIF_BOX);
                         const candidate = {
                             left,
                             top,
@@ -841,7 +933,10 @@
                             (data && data.record && data.record.scores) || [];
                         return Array.isArray(list) ? list : [];
                     } catch (e) {
-                        console.warn("leaderboard fetch failed, using local", e);
+                        console.warn(
+                            "leaderboard fetch failed, using local",
+                            e,
+                        );
                         return loadLocal();
                     }
                 }
