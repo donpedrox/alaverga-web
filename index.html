@@ -74,11 +74,19 @@
         <h1>NO MAMES</h1>
         <h2>pinche página está en construcción</h2>
         <img src="assets/pngaaa.com-34971.png" alt="racist af">
-        <div><a class="btn" onclick="navigate('nada')">¿Y si le picas aquí wey?</a></div>
+        <div><a class="btn" onclick="navigate('flappy')">¿Y si le picas aquí wey?</a></div>
       `,
-        nada: `
-        <h1>No hay nada aquí tampoco ... como chingas.</h1>
-        <div><a class="btn" onclick="navigate('home')">Volver</a></div>
+        flappy: `
+        <h1>FLAPPY WEY</h1>
+        <h2>Espacio / ↑ / Tap pa' aletear</h2>
+        <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-start; gap:1.5em;">
+          <canvas id="flappy-canvas" width="480" height="640" style="max-width:95%; background:#70c5ce; border:4px dashed #ff0; border-radius:12px;"></canvas>
+          <div id="flappy-leaderboard" style="min-width:220px; background:#111; border:4px dashed #0ff; border-radius:12px; padding:1em; font-family:monospace; text-align:left;">
+            <h3 style="margin:0 0 0.5em; color:#ff0; text-align:center; font-family:'Comic Sans MS', cursive;">🏆 TOP 5 🏆</h3>
+            <ol id="flappy-scores" style="padding-left:1.5em; margin:0; color:#fff;"></ol>
+          </div>
+        </div>
+        <div style="margin-top:1em;"><a class="btn" onclick="navigate('home')">Volver</a></div>
       `,
       };
 
@@ -90,6 +98,224 @@
       function render(route) {
         const content = routes[route] || routes.home;
         app.innerHTML = content;
+        if (route === "flappy") startFlappyGame();
+      }
+
+      function startFlappyGame() {
+        const canvas = document.getElementById("flappy-canvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const groundH = 60;
+
+        const LB_KEY = "flappy_leaderboard_v1";
+        const MAX_ENTRIES = 5;
+        let scoreSubmitted = false;
+
+        function loadScores() {
+          try {
+            return JSON.parse(localStorage.getItem(LB_KEY)) || [];
+          } catch (e) {
+            return [];
+          }
+        }
+        function saveScores(list) {
+          localStorage.setItem(LB_KEY, JSON.stringify(list));
+        }
+        function renderLeaderboard() {
+          const ol = document.getElementById("flappy-scores");
+          if (!ol) return;
+          const list = loadScores();
+          if (list.length === 0) {
+            ol.innerHTML = '<li style="color:#888; list-style:none; margin-left:-1em;">sin scores aún</li>';
+            return;
+          }
+          ol.innerHTML = list
+            .map(
+              (e) =>
+                `<li><span style="color:#0ff;">${escapeHtml(e.name)}</span> — <b style="color:#ff0;">${e.score}</b></li>`
+            )
+            .join("");
+        }
+        function escapeHtml(s) {
+          return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+        }
+        function submitScore(finalScore) {
+          if (scoreSubmitted || finalScore <= 0) return;
+          scoreSubmitted = true;
+          const list = loadScores();
+          const qualifies = list.length < MAX_ENTRIES || finalScore > list[list.length - 1].score;
+          if (!qualifies) return;
+          let name = (prompt("¡Nuevo high score! ¿Cómo te llamas wey?", "anónimo") || "anónimo").trim().slice(0, 12) || "anónimo";
+          list.push({ name, score: finalScore });
+          list.sort((a, b) => b.score - a.score);
+          saveScores(list.slice(0, MAX_ENTRIES));
+          renderLeaderboard();
+        }
+
+        renderLeaderboard();
+
+        const bird = { x: 90, y: H / 2, r: 14, vy: 0 };
+        const gravity = 0.5;
+        const flapV = -8;
+        const pipeW = 60;
+        const gap = 150;
+        const pipeSpeed = 2.5;
+        let pipes = [];
+        let frame = 0;
+        let score = 0;
+        let gameOver = false;
+        let started = false;
+        let rafId = null;
+
+        function reset() {
+          if (rafId) cancelAnimationFrame(rafId);
+          bird.y = H / 2;
+          bird.vy = 0;
+          pipes = [];
+          frame = 0;
+          score = 0;
+          gameOver = false;
+          started = false;
+          scoreSubmitted = false;
+          loop();
+        }
+
+        function flap() {
+          if (gameOver) {
+            reset();
+            return;
+          }
+          started = true;
+          bird.vy = flapV;
+        }
+
+        function spawnPipe() {
+          const minTop = 40;
+          const maxTop = H - groundH - gap - 40;
+          const topH = minTop + Math.random() * (maxTop - minTop);
+          pipes.push({ x: W, top: topH, scored: false });
+        }
+
+        function loop() {
+          if (gameOver) return;
+          rafId = requestAnimationFrame(loop);
+
+          // bg
+          ctx.fillStyle = "#70c5ce";
+          ctx.fillRect(0, 0, W, H);
+
+          if (started) {
+            frame++;
+            bird.vy += gravity;
+            bird.y += bird.vy;
+
+            if (frame % 90 === 0) spawnPipe();
+          }
+
+          // pipes
+          ctx.fillStyle = "#2ecc40";
+          for (let i = pipes.length - 1; i >= 0; i--) {
+            const p = pipes[i];
+            if (started) p.x -= pipeSpeed;
+            ctx.fillRect(p.x, 0, pipeW, p.top);
+            ctx.fillRect(p.x, p.top + gap, pipeW, H - groundH - p.top - gap);
+
+            // collision
+            if (
+              bird.x + bird.r > p.x &&
+              bird.x - bird.r < p.x + pipeW &&
+              (bird.y - bird.r < p.top || bird.y + bird.r > p.top + gap)
+            ) {
+              gameOver = true;
+            }
+
+            if (!p.scored && p.x + pipeW < bird.x) {
+              p.scored = true;
+              score++;
+            }
+
+            if (p.x + pipeW < 0) pipes.splice(i, 1);
+          }
+
+          // ground
+          ctx.fillStyle = "#ded895";
+          ctx.fillRect(0, H - groundH, W, groundH);
+          ctx.fillStyle = "#33a532";
+          ctx.fillRect(0, H - groundH, W, 8);
+
+          // bird
+          ctx.fillStyle = "#ff0";
+          ctx.beginPath();
+          ctx.arc(bird.x, bird.y, bird.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = "#000";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          ctx.fillStyle = "#f60";
+          ctx.fillRect(bird.x + bird.r - 2, bird.y - 2, 8, 4);
+
+          // floor / ceiling collision
+          if (bird.y + bird.r >= H - groundH || bird.y - bird.r <= 0) {
+            gameOver = true;
+          }
+
+          // score
+          ctx.fillStyle = "#fff";
+          ctx.strokeStyle = "#000";
+          ctx.lineWidth = 3;
+          ctx.font = "bold 36px monospace";
+          ctx.textAlign = "center";
+          ctx.strokeText(score, W / 2, 60);
+          ctx.fillText(score, W / 2, 60);
+
+          if (!started) {
+            ctx.font = "bold 22px monospace";
+            ctx.strokeText("Pícale pa' empezar", W / 2, H / 2 - 40);
+            ctx.fillText("Pícale pa' empezar", W / 2, H / 2 - 40);
+          }
+
+          if (gameOver) {
+            ctx.font = "bold 40px monospace";
+            ctx.strokeText("GAME OVER", W / 2, H / 2);
+            ctx.fillText("GAME OVER", W / 2, H / 2);
+            ctx.font = "bold 18px monospace";
+            ctx.strokeText("Pícale pa' otra", W / 2, H / 2 + 30);
+            ctx.fillText("Pícale pa' otra", W / 2, H / 2 + 30);
+            ctx.textAlign = "start";
+            const finalScore = score;
+            setTimeout(() => submitScore(finalScore), 50);
+            return;
+          }
+          ctx.textAlign = "start";
+        }
+
+        // input
+        const keyHandler = (e) => {
+          if (e.code === "Space" || e.code === "ArrowUp") {
+            e.preventDefault();
+            flap();
+          }
+        };
+        const tapHandler = (e) => {
+          e.preventDefault();
+          flap();
+        };
+        document.addEventListener("keydown", keyHandler);
+        canvas.addEventListener("touchstart", tapHandler);
+        canvas.addEventListener("mousedown", tapHandler);
+
+        // cleanup when leaving route
+        const cleanup = () => {
+          document.removeEventListener("keydown", keyHandler);
+          if (rafId) cancelAnimationFrame(rafId);
+          gameOver = true;
+          window.removeEventListener("hashchange", cleanup);
+        };
+        window.addEventListener("hashchange", cleanup);
+
+        loop();
       }
 
       window.addEventListener("popstate", () => {
