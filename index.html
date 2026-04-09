@@ -987,12 +987,15 @@
                         .join("");
                 }
                 async function refreshLeaderboard() {
+                    const ol = document.getElementById("flappy-scores");
+                    if (ol) ol.innerHTML = '<li style="color:#888; list-style:none;">cargando...</li>';
                     cachedScores = await fetchScores();
                     renderLeaderboard();
                 }
                 async function submitScore(finalScore) {
                     if (scoreSubmitted || finalScore <= 0) return;
                     scoreSubmitted = true;
+                    
                     const list = await fetchScores();
                     const qualifies =
                         list.length < MAX_ENTRIES ||
@@ -1011,12 +1014,15 @@
                         )
                             .trim()
                             .slice(0, 12) || "anónimo";
-                    list.push({ name, score: finalScore });
-                    list.sort((a, b) => b.score - a.score);
-                    const trimmed = list.slice(0, MAX_ENTRIES);
-                    cachedScores = trimmed;
-                    renderLeaderboard();
+
+                    const updated = [...list, { name,score: finalscore }]
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, MAX_ENTRIES);
+                    
                     await pushScores(trimmed);
+                    cachedScores = await fetchScores();
+                    renderLeaderboard();
+
                 }
 
                 refreshLeaderboard();
